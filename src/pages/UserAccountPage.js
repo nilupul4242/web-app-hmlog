@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import axios from 'axios';
 import LanguageContext from '../context/LanguageContext';
-
 
 export default function UserAccountPage() {
   const { language } = useContext(LanguageContext);
@@ -32,31 +31,22 @@ export default function UserAccountPage() {
 
   const t = translations[language];
 
+  // ✅ Memoized function to satisfy useEffect dependency
+  const fetchUserData = useCallback(async () => {
+    try {
+      const username = localStorage.getItem('username');
+      const response = await axios.get(`${baseUrl}/Maintenance/get-useraccount?username=${encodeURIComponent(username)}`);
+      setUser(response.data.data); 
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [baseUrl]);
+
   useEffect(() => {
     fetchUserData();
-  }, []);
-
-const fetchUserData = async () => {
-  try {
-    const username = localStorage.getItem('username');
-    const response = await axios.get(`${baseUrl}/Maintenance/get-useraccount?username=${encodeURIComponent(username)}`);
-    setUser(response.data.data);  // assuming API returns { success, data }
-  } catch (error) {
-    console.error('Failed to fetch user data:', error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-  const handleLogout = async () => {
-    try {
-      await axios.post('/logout');
-      localStorage.clear();
-      window.location.href = '/login';
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
+  }, [fetchUserData]);
 
   if (loading) {
     return (

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import './Login.css';
 import logo from '../assets/fv.png';
+import toast from 'react-hot-toast';
 
 function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState('');
@@ -9,8 +10,6 @@ function Login({ setIsAuthenticated }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   const handleSubmit = async (e) => {
@@ -25,7 +24,7 @@ function Login({ setIsAuthenticated }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username: email,  // Assuming "email" is the username field
+        username: email, 
         password: password,
       }),
     });
@@ -36,17 +35,18 @@ function Login({ setIsAuthenticated }) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('username', data.username);
       localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('hotelid', data.hotelId);
 
-      setIsAuthenticated(true); // trigger rerender in App
+      setIsAuthenticated(true); 
       setLoading(false);
       navigate('/', { replace: true });
     } else {
-      setError(data.message || 'Invalid username or password.');
+      toast.error(data.message || 'Invalid username or password.');
       setLoading(false);
     }
   } catch (err) {
     console.error(err);
-    setError('Login failed. Please try again.');
+    toast.error('Login failed. Please try again.');
     setLoading(false);
   }
 };

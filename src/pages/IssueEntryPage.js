@@ -1,10 +1,14 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import LanguageContext from '../context/LanguageContext';
+import toast from 'react-hot-toast';
 
 export default function IssueEntryPage() {
   const { language } = useContext(LanguageContext);
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
+  const username = localStorage.getItem('username');
+  const hotelid = localStorage.getItem('hotelid');
+
   const [formState, setFormState] = useState({
     roomNumber: '',
     issueTitle: '',
@@ -27,16 +31,20 @@ export default function IssueEntryPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${baseUrl}/Maintenance/add-issue`, formState);
-      alert(translations[language].submitSuccess);
-      // You can add navigation here if needed
+      const payload = {
+        ...formState,
+        addUser: username, 
+        hotelId : hotelid,
+      };
+  
+      await axios.post(`${baseUrl}/Maintenance/add-issue`, payload);
+      toast.success(translations[language].submitSuccess);
     } catch (error) {
-      console.error('Error submitting issue:', error);
-      alert(translations[language].submitError);
+      toast.error(translations[language].submitError);
     }
   };
 
-  // Translations for English and Spanish
+
   const translations = {
     en: {
       pageTitle: 'Submit New Issue',
