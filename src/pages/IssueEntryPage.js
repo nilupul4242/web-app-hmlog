@@ -4,7 +4,7 @@ import LanguageContext from '../context/LanguageContext';
 
 export default function IssueEntryPage() {
   const { language } = useContext(LanguageContext);
-
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
   const [formState, setFormState] = useState({
     roomNumber: '',
     issueTitle: '',
@@ -27,7 +27,7 @@ export default function IssueEntryPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5071/api/Maintenance/add-issue', formState);
+      await axios.post(`${baseUrl}/Maintenance/add-issue`, formState);
       alert(translations[language].submitSuccess);
       // You can add navigation here if needed
     } catch (error) {

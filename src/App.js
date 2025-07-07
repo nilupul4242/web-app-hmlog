@@ -5,9 +5,11 @@ import Dashboard from './pages/Dashboard';
 import IssueEntryPage from './pages/IssueEntryPage';
 import IssueListPage from './pages/IssueListPage';
 import UserAccountPage from './pages/UserAccountPage';
+import UpdateIssueStatus from './pages/UpdateIssueStatus';
 import PrivateRoute from './Routes/PrivateRoute';
 import { LanguageProvider } from './context/LanguageContext';
 import Layout from './components/Layout';
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
@@ -26,7 +28,9 @@ function App() {
   return (
     <LanguageProvider>
       <Router>
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
         <Routes>
+       
           {/* Public Route: Login */}
           <Route
             path="/login"
@@ -76,6 +80,17 @@ function App() {
               <PrivateRoute isAuthenticated={isAuthenticated}>
                 <Layout setIsAuthenticated={setIsAuthenticated}>
                   <UserAccountPage />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/UpdateIssueStatus"
+            element={
+              <PrivateRoute isAuthenticated={isAuthenticated}>
+                <Layout setIsAuthenticated={setIsAuthenticated}>
+                  <UpdateIssueStatus />
                 </Layout>
               </PrivateRoute>
             }

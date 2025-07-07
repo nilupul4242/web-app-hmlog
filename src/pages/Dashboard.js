@@ -9,6 +9,7 @@ export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState({});
   const { language } = useContext(LanguageContext);
   const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   const translations = {
     en: {
@@ -26,7 +27,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await api.get('http://localhost:5071/api/Maintenance/dashboard');
+        const response = await api.get(`${baseUrl}/Maintenance/dashboard`);
         setDashboardData(response.data);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -56,12 +57,12 @@ export default function Dashboard() {
         <DashboardTile
           title={translations[language]?.issuesReportedToday || '...'}
           count={dashboardData.issuesReportedToday}
-          onClick={() => navigate('/issue-details')}
+          onClick={() => navigate('/IssueListPage')}
         />
         <DashboardTile
           title={translations[language]?.issuesResolvedToday || '...'}
           count={dashboardData.issuesResolvedToday}
-          onClick={() => navigate('/issue-details')}
+          onClick={() => navigate('/IssueListPage')}
         />
       </div>
 

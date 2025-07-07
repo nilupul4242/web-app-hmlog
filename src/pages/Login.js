@@ -11,6 +11,7 @@ function Login({ setIsAuthenticated }) {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -18,7 +19,7 @@ function Login({ setIsAuthenticated }) {
   setLoading(true);
 
   try {
-    const response = await fetch('http://localhost:5071/api/Maintenance/login', {
+    const response = await fetch(`${baseUrl}/Maintenance/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

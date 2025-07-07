@@ -7,6 +7,7 @@ export default function UserAccountPage() {
   const { language } = useContext(LanguageContext);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   const translations = {
     en: {
@@ -38,7 +39,7 @@ export default function UserAccountPage() {
 const fetchUserData = async () => {
   try {
     const username = localStorage.getItem('username');
-    const response = await axios.get(`http://localhost:5071/api/Maintenance/get-useraccount?username=${encodeURIComponent(username)}`);
+    const response = await axios.get(`${baseUrl}/Maintenance/get-useraccount?username=${encodeURIComponent(username)}`);
     setUser(response.data.data);  // assuming API returns { success, data }
   } catch (error) {
     console.error('Failed to fetch user data:', error);

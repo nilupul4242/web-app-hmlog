@@ -17,6 +17,7 @@ export default function Sidebar({ setIsAuthenticated }) {
       submitIssue: 'Submit an Issue',
       issueDetails: 'Issue Details',
       account: 'Account',
+      updateIssueStatus: 'Update Issue Status',
     },
     es: {
       logOut: 'Cerrar Sesión',
@@ -25,6 +26,7 @@ export default function Sidebar({ setIsAuthenticated }) {
       submitIssue: 'Enviar un Problema',
       issueDetails: 'Detalles del Problema',
       account: 'Cuenta',
+      updateIssueStatus: 'Actualizar estado del problema',
     },
   };
 
@@ -74,6 +76,12 @@ export default function Sidebar({ setIsAuthenticated }) {
           className="mb-3 text-left px-3 py-2 rounded hover:bg-gray-700"
         >
           {translations[language]?.dashboard || 'Dashboard'}
+        </button>
+        <button
+          onClick={() => navigate('/UpdateIssueStatus')}
+          className="mb-3 text-left px-3 py-2 rounded hover:bg-gray-700"
+        >
+          {translations[language]?.updateIssueStatus || 'Update Issue Status'}
         </button>
         <button
           onClick={() => navigate('/IssueEntryPage')}

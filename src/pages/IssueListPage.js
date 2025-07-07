@@ -4,7 +4,7 @@ import LanguageContext from '../context/LanguageContext';
 
 export default function IssueListPage() {
   const { language } = useContext(LanguageContext);
-
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
   const [issues, setIssues] = useState([]);
   const [filteredIssues, setFilteredIssues] = useState([]);
   const [filters, setFilters] = useState({
@@ -18,7 +18,7 @@ export default function IssueListPage() {
       filterCategory: 'Filter by Category',
       filterPerson: 'Filter by Assigned Person',
       noIssues: 'No issues found.',
-      tableHeaders: ['Room', 'Title', 'Description', 'Category', 'Source', 'Assigned'],
+      tableHeaders: ['Room', 'Title', 'Description', 'Category', 'Source', 'Assigned','Status', 'Report Date'],
       categories: ['All', 'Maintenance', 'Cleaning', 'Other'],
       people: ['All', 'John Doe', 'Jane Smith', 'Other'],
     },
@@ -27,7 +27,7 @@ export default function IssueListPage() {
       filterCategory: 'Filtrar por Categoría',
       filterPerson: 'Filtrar por Persona Asignada',
       noIssues: 'No se encontraron problemas.',
-      tableHeaders: ['Habitación', 'Título', 'Descripción', 'Categoría', 'Fuente', 'Asignado'],
+      tableHeaders: ['Habitación', 'Título', 'Descripción', 'Categoría', 'Fuente', 'Asignado', 'Estado','Fecha del informe'],
       categories: ['Todos', 'Mantenimiento', 'Limpieza', 'Otro'],
       people: ['Todos', 'John Doe', 'Jane Smith', 'Otro'],
     },
@@ -63,7 +63,7 @@ export default function IssueListPage() {
 
   const fetchIssues = async () => {
     try {
-      const response = await axios.get('http://localhost:5071/api/Maintenance/get-issues');
+      const response = await axios.get(`${baseUrl}/Maintenance/get-issues`);
       if (response.data.success) {
         setIssues(response.data.data);
         setFilteredIssues(response.data.data);
@@ -145,6 +145,8 @@ export default function IssueListPage() {
                     <td className="px-4 py-2 border">{issue.category}</td>
                     <td className="px-4 py-2 border">{issue.source}</td>
                     <td className="px-4 py-2 border">{issue.assignedPerson}</td>
+                    <td className="px-4 py-2 border">{issue.isResolved ? 'Resolved' : 'Unresolved'}</td>
+                    <td className="px-4 py-2 border">{new Date(issue.dateReported).toLocaleString()}</td>
                   </tr>
                 ))
               )}
