@@ -11,7 +11,6 @@ import { LanguageProvider } from './context/LanguageContext';
 import Layout from './components/Layout';
 import { Toaster } from 'react-hot-toast';
 
-
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('isAuthenticated') === 'true'
